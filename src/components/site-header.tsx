@@ -34,15 +34,6 @@ export default function SiteHeader() {
             scrolled || open ? 'lg--dense' : ''
           }`}
         >
-          <a href="#top" className="flex items-center gap-2.5">
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-glow to-[#5b21b6] shadow-[0_0_20px_-4px] shadow-glow/70">
-              <span className="font-mono text-sm font-bold text-white">L</span>
-            </span>
-            <span className="text-[15px] font-semibold tracking-tight text-white">
-              Lumen<span className="text-glow-soft">LMS</span>
-            </span>
-          </a>
-
           <nav className="hidden items-center gap-1 md:flex">
             {links.map((link) => (
               <a
