@@ -162,7 +162,7 @@ export default function Home() {
               <div className="mt-9 flex animate-rise flex-col gap-3 [animation-delay:240ms] sm:flex-row sm:items-center">
                 <a
                   href="#get-started"
-                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-medium text-ink shadow-[0_0_40px_-10px] shadow-glow transition-transform hover:scale-[1.03] active:scale-95"
+                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-medium text-ink transition-transform hover:scale-[1.03] active:scale-95"
                 >
                   Start teaching free
                   <svg viewBox="0 0 24 24" className="h-4 w-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" strokeWidth="2">

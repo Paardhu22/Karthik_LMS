@@ -27,15 +27,6 @@ export default function SiteHeader() {
       }`}
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <a href="#top" className="group flex items-center gap-2.5">
-          <span className="relative grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-glow to-[#5b21b6] shadow-[0_0_20px_-4px] shadow-glow/70">
-            <span className="font-mono text-sm font-bold text-white">L</span>
-          </span>
-          <span className="text-[15px] font-semibold tracking-tight text-white">
-            Lumen<span className="text-glow-soft">LMS</span>
-          </span>
-        </a>
-
         <nav className="hidden items-center gap-1 md:flex">
           {links.map((link) => (
             <a
@@ -68,7 +59,7 @@ export default function SiteHeader() {
           onClick={() => setOpen((value) => !value)}
           aria-expanded={open}
           aria-label="Toggle navigation"
-          className="grid h-10 w-10 place-items-center rounded-lg border border-white/10 text-white md:hidden"
+          className="ml-auto grid h-10 w-10 place-items-center rounded-lg border border-white/10 text-white md:ml-0 md:hidden"
         >
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.7">
             {open ? <path d="m6 6 12 12M18 6 6 18" /> : <path d="M4 8h16M4 16h16" />}
