@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import GlassButton from '@/components/glass-button';
+import { useGlassPointer } from '@/components/use-glass-pointer';
 
 const links = [
   { href: '#features', label: 'Features' },
@@ -12,6 +14,7 @@ const links = [
 export default function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { ref: barRef, onPointerMove: onBarMove, onPointerLeave: onBarLeave } = useGlassPointer<HTMLDivElement>();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -21,75 +24,79 @@ export default function SiteHeader() {
   }, []);
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        scrolled || open ? 'border-b border-white/10 bg-ink/90 backdrop-blur-xl' : 'border-b border-transparent'
-      }`}
-    >
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <nav className="hidden items-center gap-1 md:flex">
-          {links.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="rounded-full px-3.5 py-2 text-sm text-muted transition-colors hover:bg-white/5 hover:text-white"
-            >
-              {link.label}
-            </a>
-          ))}
-        </nav>
-
-        <div className="hidden items-center gap-2 md:flex">
-          <a
-            href="#get-started"
-            className="rounded-full px-3.5 py-2 text-sm text-muted transition-colors hover:text-white"
-          >
-            Sign in
-          </a>
-          <a
-            href="#get-started"
-            className="rounded-full bg-white px-4 py-2 text-sm font-medium text-ink transition-transform hover:scale-[1.03] active:scale-95"
-          >
-            Start free
-          </a>
-        </div>
-
-        <button
-          type="button"
-          onClick={() => setOpen((value) => !value)}
-          aria-expanded={open}
-          aria-label="Toggle navigation"
-          className="ml-auto grid h-10 w-10 place-items-center rounded-lg border border-white/10 text-white md:ml-0 md:hidden"
+    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-3 sm:px-6 sm:pt-4">
+      <div className="mx-auto max-w-6xl">
+        <div
+          ref={barRef}
+          onPointerMove={onBarMove}
+          onPointerLeave={onBarLeave}
+          className={`lg lg--bar flex h-14 items-center justify-between rounded-full pr-2 pl-4 sm:pl-5 ${
+            scrolled || open ? 'lg--dense' : ''
+          }`}
         >
-          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.7">
-            {open ? <path d="m6 6 12 12M18 6 6 18" /> : <path d="M4 8h16M4 16h16" />}
-          </svg>
-        </button>
-      </div>
+          <a href="#top" className="flex items-center gap-2.5">
+            <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-glow to-[#5b21b6] shadow-[0_0_20px_-4px] shadow-glow/70">
+              <span className="font-mono text-sm font-bold text-white">L</span>
+            </span>
+            <span className="text-[15px] font-semibold tracking-tight text-white">
+              Lumen<span className="text-glow-soft">LMS</span>
+            </span>
+          </a>
 
-      {open ? (
-        <div className="border-t border-white/10 md:hidden">
-          <nav className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-4 sm:px-6">
+          <nav className="hidden items-center gap-1 md:flex">
             {links.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                onClick={() => setOpen(false)}
-                className="rounded-lg px-3 py-2.5 text-sm text-muted hover:bg-white/5 hover:text-white"
+                className="rounded-full px-3.5 py-2 text-sm text-white/70 transition-colors hover:bg-white/10 hover:text-white"
               >
                 {link.label}
               </a>
             ))}
-            <a
-              href="#get-started"
-              onClick={() => setOpen(false)}
-              className="mt-2 rounded-lg bg-white px-3 py-2.5 text-center text-sm font-medium text-ink"
-            >
-              Start free
-            </a>
           </nav>
+
+          <div className="hidden items-center gap-2 md:flex">
+            <a href="#get-started" className="rounded-full px-3.5 py-2 text-sm text-white/70 transition-colors hover:text-white">
+              Sign in
+            </a>
+            <GlassButton href="#get-started" variant="solid" size="sm">
+              Start free
+            </GlassButton>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setOpen((value) => !value)}
+            aria-expanded={open}
+            aria-label="Toggle navigation"
+            className="ml-auto grid h-10 w-10 place-items-center rounded-full text-white transition-colors hover:bg-white/10 md:ml-0 md:hidden"
+          >
+            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.7">
+              {open ? <path d="m6 6 12 12M18 6 6 18" /> : <path d="M4 8h16M4 16h16" />}
+            </svg>
+          </button>
         </div>
-      ) : null}
+
+        {open ? (
+          <div className="lg lg--bar lg--dense mt-2 rounded-3xl p-2 md:hidden">
+            <nav className="flex flex-col gap-1">
+              {links.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className="rounded-2xl px-4 py-3 text-sm text-white/75 transition-colors hover:bg-white/10 hover:text-white"
+                >
+                  {link.label}
+                </a>
+              ))}
+              <GlassButton href="#get-started" variant="solid" size="md" className="mt-1 w-full">
+                Start free
+              </GlassButton>
+            </nav>
+          </div>
+        ) : null}
+      </div>
     </header>
   );
 }

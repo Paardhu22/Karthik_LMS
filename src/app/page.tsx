@@ -1,6 +1,14 @@
 import type { ReactNode } from 'react';
+import GlassButton from '@/components/glass-button';
 import HeroBackground from '@/components/hero-background';
 import SiteHeader from '@/components/site-header';
+const heroStats = [
+  { value: '12k+', label: 'Active learners' },
+  { value: '480', label: 'Courses published' },
+  { value: '94%', label: 'Completion rate' },
+  { value: '4.9', label: 'Average rating' }
+];
+
 const partners = ['NORTHWIND', 'HELIX LABS', 'ORBIT', 'CADENCE', 'VOLT ACADEMY', 'MERIDIAN'];
 
 const features = [
@@ -133,7 +141,7 @@ export default function Home() {
 
           <div className="relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-6">
             <div className="max-w-2xl">
-              <span className="inline-flex animate-rise items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-muted backdrop-blur-md">
+              <span className="lg lg--btn inline-flex animate-rise items-center gap-2 rounded-full px-3.5 py-1.5 text-xs text-white/80">
                 <span className="h-1.5 w-1.5 animate-pulse-dot rounded-full bg-glow" />
                 Autumn cohort enrolling — 40 seats left
               </span>
@@ -152,26 +160,30 @@ export default function Home() {
               </p>
 
               <div className="mt-9 flex animate-rise flex-col gap-3 [animation-delay:240ms] sm:flex-row sm:items-center">
-                <a
-                  href="#get-started"
-                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-medium text-ink transition-transform hover:scale-[1.03] active:scale-95"
-                >
+                <GlassButton href="#get-started" variant="solid" size="lg">
                   Start teaching free
                   <svg viewBox="0 0 24 24" className="h-4 w-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M5 12h13m0 0-5-5m5 5-5 5" />
                   </svg>
-                </a>
-                <a
-                  href="#catalog"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 py-3.5 text-sm font-medium text-white backdrop-blur-md transition-colors hover:border-white/40 hover:bg-white/10"
-                >
+                </GlassButton>
+                <GlassButton href="#catalog" size="lg">
                   Browse the catalog
-                </a>
+                </GlassButton>
               </div>
 
               <p className="mt-4 animate-rise text-xs text-muted/80 [animation-delay:300ms]">
                 No credit card required · Free for your first 50 learners
               </p>
+
+              <dl className="mt-14 grid animate-rise grid-cols-2 gap-x-6 gap-y-6 border-t border-white/10 pt-8 [animation-delay:360ms] sm:grid-cols-4">
+                {heroStats.map((stat) => (
+                  <div key={stat.label}>
+                    <dt className="sr-only">{stat.label}</dt>
+                    <dd className="font-mono text-2xl font-semibold text-white sm:text-3xl">{stat.value}</dd>
+                    <p className="mt-1 text-xs tracking-wide text-muted uppercase">{stat.label}</p>
+                  </div>
+                ))}
+              </dl>
             </div>
           </div>
         </section>
@@ -429,16 +441,13 @@ export default function Home() {
                     ))}
                   </ul>
 
-                  <a
+                  <GlassButton
                     href="#get-started"
-                    className={`mt-7 inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-medium transition-transform hover:scale-[1.02] active:scale-95 ${
-                      plan.featured
-                        ? 'bg-white text-ink'
-                        : 'border border-white/20 bg-white/5 text-white hover:bg-white/10'
-                    }`}
+                    variant={plan.featured ? 'solid' : 'clear'}
+                    className="mt-7 w-full"
                   >
                     {plan.cta}
-                  </a>
+                  </GlassButton>
                 </article>
               ))}
             </div>
@@ -468,18 +477,12 @@ export default function Home() {
                 the same afternoon.
               </p>
               <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <a
-                  href="#top"
-                  className="inline-flex w-full items-center justify-center rounded-full bg-white px-6 py-3.5 text-sm font-medium text-ink shadow-[0_0_40px_-10px] shadow-glow transition-transform hover:scale-[1.03] active:scale-95 sm:w-auto"
-                >
+                <GlassButton href="#top" variant="solid" size="lg" className="w-full sm:w-auto">
                   Create your workspace
-                </a>
-                <a
-                  href="#features"
-                  className="inline-flex w-full items-center justify-center rounded-full border border-white/20 bg-white/5 px-6 py-3.5 text-sm font-medium text-white transition-colors hover:bg-white/10 sm:w-auto"
-                >
+                </GlassButton>
+                <GlassButton href="#features" size="lg" className="w-full sm:w-auto">
                   Book a walkthrough
-                </a>
+                </GlassButton>
               </div>
             </div>
           </div>
@@ -491,15 +494,7 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
           <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
             <div>
-              <div className="flex items-center gap-2.5">
-                <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-glow to-[#5b21b6]">
-                  <span className="font-mono text-sm font-bold text-white">L</span>
-                </span>
-                <span className="text-[15px] font-semibold tracking-tight text-white">
-                  Lumen<span className="text-glow-soft">LMS</span>
-                </span>
-              </div>
-              <p className="mt-4 max-w-xs text-sm text-muted">
+              <p className="max-w-xs text-sm text-muted">
                 A learning platform for teams that care whether the course actually landed.
               </p>
             </div>

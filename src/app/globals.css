@@ -92,3 +92,161 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* --------------------------------------------------------------------------
+   Liquid glass
+   A .lg surface is four stacked layers:
+     1. the refracted backdrop  (backdrop-filter + the SVG displacement map)
+     2. a tint                  (background-color)
+     3. a specular sheen        (::before, follows the pointer)
+     4. a lit rim               (::after, gradient border via mask-composite)
+   The plain-blur declaration comes first on purpose: browsers that cannot
+   parse url() inside backdrop-filter drop the second one and keep the blur.
+   -------------------------------------------------------------------------- */
+
+.lg {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background-color: rgb(255 255 255 / 0.07);
+  backdrop-filter: blur(14px) saturate(180%) brightness(1.06);
+  box-shadow:
+    inset 0 1px 1px 0 rgb(255 255 255 / 0.4),
+    inset 0 -12px 24px -16px rgb(255 255 255 / 0.25),
+    0 10px 30px -12px rgb(0 0 0 / 0.7);
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
+}
+
+/* Specular highlight that tracks the pointer. z-index -1 keeps it above the
+   surface tint but below the label. */
+.lg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(
+    140px circle at var(--lg-x, 50%) var(--lg-y, 0%),
+    rgb(255 255 255 / 0.22),
+    transparent 65%
+  );
+  opacity: var(--lg-sheen, 0);
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+/* Lit rim: bright where light would catch the bevel, dim on the shadow side. */
+.lg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    145deg,
+    rgb(255 255 255 / 0.7),
+    rgb(255 255 255 / 0.08) 30%,
+    rgb(255 255 255 / 0) 55%,
+    rgb(255 255 255 / 0.35)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.lg:hover {
+  --lg-sheen: 1;
+}
+
+/* Navigation bar: wider blur, permanent low sheen, dark tint so the labels
+   stay legible even where the shader behind it is at full brightness. */
+.lg--bar {
+  --lg-sheen: 0.5;
+  background-color: rgb(10 5 19 / 0.5);
+  backdrop-filter: blur(16px) saturate(185%) brightness(1.05);
+}
+
+.lg--bar:hover {
+  --lg-sheen: 1;
+}
+
+/* Scrolled state: thicker glass, so content passing underneath stays quiet. */
+.lg--dense {
+  background-color: rgb(8 4 16 / 0.72);
+  box-shadow:
+    inset 0 1px 1px 0 rgb(255 255 255 / 0.34),
+    inset 0 -12px 24px -16px rgb(255 255 255 / 0.2),
+    0 16px 44px -16px rgb(0 0 0 / 0.85);
+}
+
+/* Buttons: a shorter throw on the displacement map, since the element is
+   small enough that heavy warping reads as blur rather than refraction. */
+.lg--btn {
+  backdrop-filter: blur(11px) saturate(175%) brightness(1.08);
+}
+
+.lg--btn:hover {
+  background-color: rgb(255 255 255 / 0.13);
+}
+
+/* Solid variant: still glass (the backdrop shows through at 8%), but bright
+   enough to carry dark text as the primary call to action. */
+.lg--solid {
+  background-color: rgb(255 255 255 / 0.92);
+  color: var(--color-ink);
+  box-shadow:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.9),
+    inset 0 -10px 20px -14px rgb(0 0 0 / 0.35),
+    0 12px 36px -12px rgb(199 85 247 / 0.75);
+}
+
+.lg--solid::before {
+  background: radial-gradient(
+    150px circle at var(--lg-x, 50%) var(--lg-y, 0%),
+    rgb(255 255 255 / 0.95),
+    transparent 60%
+  );
+}
+
+.lg--solid::after {
+  background: linear-gradient(
+    145deg,
+    rgb(255 255 255 / 0.95),
+    rgb(255 255 255 / 0.25) 40%,
+    rgb(0 0 0 / 0.07)
+  );
+}
+
+.lg--solid:hover {
+  background-color: rgb(255 255 255 / 0.98);
+}
+
+/* Refraction, where the browser can run an SVG filter against the backdrop.
+   It lives in @supports rather than as a second declaration on the rule above
+   because the CSS compiler dedupes repeated properties within one rule. */
+@supports (backdrop-filter: url("#lg-refract-bar")) {
+  .lg--bar {
+    backdrop-filter: url(#lg-refract-bar) blur(16px) saturate(185%) brightness(1.05);
+  }
+
+  .lg--btn {
+    backdrop-filter: url(#lg-refract-btn) blur(11px) saturate(175%) brightness(1.08);
+  }
+}
+
+/* The displacement map is decoration; drop it when motion is unwelcome. */
+@media (prefers-reduced-motion: reduce) {
+  .lg--bar,
+  .lg--btn {
+    backdrop-filter: blur(14px) saturate(180%);
+  }
+}
