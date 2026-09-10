@@ -1,14 +1,6 @@
 import type { ReactNode } from 'react';
 import HeroBackground from '@/components/hero-background';
 import SiteHeader from '@/components/site-header';
-
-const heroStats = [
-  { value: '12k+', label: 'Active learners' },
-  { value: '480', label: 'Courses published' },
-  { value: '94%', label: 'Completion rate' },
-  { value: '4.9', label: 'Average rating' }
-];
-
 const partners = ['NORTHWIND', 'HELIX LABS', 'ORBIT', 'CADENCE', 'VOLT ACADEMY', 'MERIDIAN'];
 
 const features = [
@@ -180,16 +172,6 @@ export default function Home() {
               <p className="mt-4 animate-rise text-xs text-muted/80 [animation-delay:300ms]">
                 No credit card required · Free for your first 50 learners
               </p>
-
-              <dl className="mt-14 grid animate-rise grid-cols-2 gap-x-6 gap-y-6 border-t border-white/10 pt-8 [animation-delay:360ms] sm:grid-cols-4">
-                {heroStats.map((stat) => (
-                  <div key={stat.label}>
-                    <dt className="sr-only">{stat.label}</dt>
-                    <dd className="font-mono text-2xl font-semibold text-white sm:text-3xl">{stat.value}</dd>
-                    <p className="mt-1 text-xs tracking-wide text-muted uppercase">{stat.label}</p>
-                  </div>
-                ))}
-              </dl>
             </div>
           </div>
         </section>
